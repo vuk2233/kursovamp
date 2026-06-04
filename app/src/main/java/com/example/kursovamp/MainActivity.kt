@@ -24,16 +24,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Necessary configuration for OpenStreetMap (OSMDroid)
+
         Configuration.getInstance().load(applicationContext, getSharedPreferences("osmdroid", MODE_PRIVATE))
         setContentView(R.layout.activity_main)
 
         map = findViewById(R.id.map)
-        map.setMultiTouchControls(true) // Enable pinching to zoom
+        map.setMultiTouchControls(true)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Check for location permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation()
@@ -52,18 +51,18 @@ class MainActivity : AppCompatActivity() {
                 if (location != null) {
                     val currentPoint = GeoPoint(location.latitude, location.longitude)
 
-                    // Center map on the user's location
+
                     map.controller.setZoom(15.0)
                     map.controller.setCenter(currentPoint)
 
-                    // Add a map marker pin
+
                     val startMarker = Marker(map)
                     startMarker.position = currentPoint
                     startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     startMarker.title = "Моята текуща локация"
                     map.overlays.add(startMarker)
 
-                    map.invalidate() // Refresh the map graphics
+                    map.invalidate()
                 } else {
                     Toast.makeText(this, "Локацията не може да бъде открита", Toast.LENGTH_SHORT).show()
                 }
